@@ -39,4 +39,19 @@ Same flow as **DEMO_SCRIPT**: problem → architecture → **Execution** (policy
 
 ## 4. If live metrics fail
 
-Read the amber **fetchError** on **Overview** (wallet name, CLI path, key rights). You can still record policy + engine, then use **Option B** in **DEMO_SCRIPT** (mock UI + separate live tx clip).
+## 5. Automated tests (`take-profit-desk`)
+
+```bash
+cd take-profit-desk
+npm install
+npm test
+```
+
+**`npm test`** runs **`test:all`**: **`npm run build`**, **`test:integration`** (temporary mock API on port **8877** + **`test-ai-agent-flow.mjs`** — passes on native Windows), and **`test:upstream`** (Zerion CLI unit tests — **skipped on Win32**, run inside **WSL/macOS/Linux** for real CLI coverage).
+
+| Script | Purpose |
+|--------|---------|
+| `npm test` · `npm run test:all` | Full suite |
+| `npm run test:integration` | Mock server + agent API smoke only |
+| `npm run test:agent` | Against **your** running API (default `http://127.0.0.1:8787`) |
+| `npm run test:upstream` | Upstream `zerion-ai` unit files (non-Windows) |

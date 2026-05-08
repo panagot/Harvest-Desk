@@ -16,7 +16,11 @@
     "preview": "vite preview",
     "deps:cli": "node ./scripts/ensure-zerion-cli-deps.mjs",
     "postinstall": "node ./scripts/ensure-zerion-cli-deps.mjs",
-    "test:agent": "node ./scripts/test-ai-agent-flow.mjs"
+    "test:agent": "node ./scripts/test-ai-agent-flow.mjs",
+    "test:integration": "node ./scripts/run-api-tests.mjs",
+    "test:upstream": "node ./scripts/run-upstream-zerion-unit.mjs",
+    "test:all": "npm run build && npm run test:integration && npm run test:upstream",
+    "test": "npm run test:all"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
