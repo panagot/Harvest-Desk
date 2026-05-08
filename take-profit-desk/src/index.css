@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --desk-bg: #fafafa;
+    --desk-surface: #ffffff;
+    --desk-muted: #71717a;
+    --desk-ink: #18181b;
+    --desk-border: #e4e4e7;
+    --desk-nav: rgba(255, 255, 255, 0.85);
+    --desk-footer: #0a0a0b;
+    --desk-accent: #6366f1;
+    --desk-accent-soft: rgba(99, 102, 241, 0.08);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--desk-ink);
+    background-color: var(--desk-bg);
+    background-image:
+      radial-gradient(ellipse 90% 55% at 50% -25%, rgba(99, 102, 241, 0.07), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 10%, rgba(99, 102, 241, 0.04), transparent),
+      linear-gradient(180deg, #ffffff 0%, #fafafa 38%, #f4f4f5 100%);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.18);
+    color: var(--desk-ink);
+  }
+}

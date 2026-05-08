@@ -1,0 +1,3 @@
+[submodule "zerion-ai"]
+	path = zerion-ai
+	url = https://github.com/zeriontech/zerion-ai.git

@@ -1,0 +1,27 @@
+# Secrets & local overrides (never commit)
+api
+.env
+.env.*
+*.local
+
+# Dependencies & build artifacts
+**/node_modules/
+**/dist/
+
+# Desk runtime state
+take-profit-desk/data/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs & debug
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
