@@ -8,8 +8,20 @@ import { resolveZerionCliPath } from "./paths.ts";
 import { zerionJson, type PortfolioStdout, type PnlStdout, type SwapStdout } from "./zerionRunner.ts";
 import type { DeskPolicy } from "./policySchema.ts";
 
+/**
+ * Synthetic/mocked PnL + portfolio (no Zerion CLI subprocess).
+ *
+ * Native **Windows** cannot load Open Wallet Standard binaries (no `@open-wallet-standard/core-win32-*` on npm).
+ * Default to mock on `win32` so localhost works; use **WSL/Linux/macOS** for live CLI, or set
+ * `ZERION_ALLOW_WIN_NATIVE=true` to attempt CLI anyway (usually still fails).
+ */
 export function computeMock(): boolean {
-  return process.env.MOCK_MODE === "true" || !String(process.env.ZERION_API_KEY || "").trim();
+  if (process.env.MOCK_MODE === "true") return true;
+  if (process.env.MOCK_MODE === "false" && process.env.ZERION_ALLOW_WIN_NATIVE === "true") {
+    return !String(process.env.ZERION_API_KEY || "").trim();
+  }
+  if (process.platform === "win32") return true;
+  return !String(process.env.ZERION_API_KEY || "").trim();
 }
 
 export function summarizeDeskAuth(mock: boolean) {

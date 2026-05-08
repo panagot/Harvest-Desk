@@ -9,6 +9,6 @@ if (process.env.VERCEL !== "1") {
     // eslint-disable-next-line no-console
     console.log(`Take Profit Desk API http://localhost:${PORT}`);
     // eslint-disable-next-line no-console
-    if (MOCK) console.log("MOCK_MODE active (set ZERION_API_KEY for live Zerion data)");
+    if (MOCK) console.log("Using synthetic PnL/portfolio (mock). On Windows this is normal — live Zerion CLI needs WSL or macOS/Linux.");
   });
 }
