@@ -40,6 +40,15 @@ npm run preview:all
 
 Serves **`http://localhost:8787`** (static `dist/` + `/api`). Uses `SERVE_STATIC=1` via cross-env.
 
+## Vercel
+
+The GitHub repo root is a **monorepo** (submodule + this app). **Vercel defaults to the repo root**, where there is no `package.json`, so deployments can appear empty (**404**).
+
+1. Vercel → project → **Settings → General → Root Directory** → **`take-profit-desk`**.
+2. Redeploy. Build is `npm run build`, output **`dist`**. **`vercel.json`** adds an SPA fallback for React Router; **`index.ts`** exposes Express **`/api/**`** ([Express on Vercel](https://vercel.com/docs/frameworks/backend/express)).
+
+Optional env: `ZERION_API_KEY`, `EXECUTE_SECRET`, `MOCK_MODE`, or **`DATA_DIR`** (otherwise data goes under **`/tmp`** on serverless). **Live CLI swaps** are not suited to Vercel; use **`preview:all`**, Railway, or a VPS for real execution. Demo / mock UI works.
+
 ## Autonomous cron (`agent:tick`)
 
 ```bash
