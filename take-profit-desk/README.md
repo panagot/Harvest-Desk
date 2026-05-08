@@ -29,7 +29,7 @@ cp .env.example .env          # DESK_WALLET, EXECUTE_SECRET; set key in .env or 
 npm run dev                   # API :8787, Vite :5173 (/api proxied)
 ```
 
-App routes: `/overview`, `/positions`, `/engine`, `/execution`.
+App routes: `/overview`, `/positions`, `/engine`, `/execution`. **Local demo recording:** [`docs/LOCAL_RECORDING.md`](./docs/LOCAL_RECORDING.md).
 
 ## Production-style single port
 

@@ -37,6 +37,9 @@ export type DeskPayload = {
     mockMode: boolean
     apiKeyConfigured: boolean
     executeSecretConfigured: boolean
+    /** Server-only hint for localhost recording — never exposes the secret. */
+    apiKeySource?: 'environment' | 'sibling_api_file' | 'custom_key_file' | 'unset'
+    zerionCliPresent?: boolean
   }
   policy: DeskPolicy
   state: {

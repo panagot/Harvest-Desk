@@ -3,7 +3,16 @@ import { Panel } from '../components/Panel'
 import { useDesk } from '../context/DeskContext'
 
 export function OverviewPage() {
-  const { loading, err, data, mockMode, pnl } = useDesk()
+  const { loading, err, data, mockMode, pnl, apiKeySource, zerionCliPresent } = useDesk()
+
+  const keyLabel =
+    apiKeySource === 'sibling_api_file'
+      ? '`…/Frontier/Zerion/api` (sibling key file)'
+      : apiKeySource === 'environment'
+        ? '`ZERION_API_KEY`'
+        : apiKeySource === 'custom_key_file'
+          ? '`ZERION_API_KEY_FILE`'
+          : 'not loaded'
 
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
@@ -33,12 +42,45 @@ export function OverviewPage() {
               ) : (
                 <span className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm font-medium text-zinc-900 shadow-sm">
                   <ShieldCheck className="h-4 w-4 shrink-0 text-zinc-600" />
-                  Connected to Zerion API / CLI
+                  Live Zerion data (API routes through local CLI — see readiness below)
                 </span>
               )}
             </div>
           )}
         </div>
+
+        {!loading && !mockMode && !zerionCliPresent && (
+          <div className="mt-6 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+            <strong className="font-semibold">Zerion CLI not found</strong>
+            {' — '}Live PnL/portfolio queries need <code className="rounded bg-white/70 px-1">zerion-ai/cli/zerion.js</code>.
+            Initialize the submodule then run{' '}
+            <code className="rounded bg-white/70 px-1">npm install</code> in <code className="rounded bg-white/70 px-1">zerion-ai/</code>{' '}
+            before recording swaps.
+          </div>
+        )}
+
+        {!loading && !mockMode && (
+          <div className="mt-6 grid gap-3 rounded-xl border border-zinc-200/90 bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:grid-cols-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">API key source</p>
+              <p className="mt-2 text-sm text-zinc-900">{keyLabel}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">CLI</p>
+              <p className="mt-2 text-sm font-medium text-zinc-900">
+                {zerionCliPresent ? 'Detected (ready for Zerion CLI calls)' : 'Missing (see alert above)'}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Execute gate</p>
+              <p className="mt-2 text-sm text-zinc-900">
+                {data?.auth.executeSecretConfigured
+                  ? 'Execute secret configured (blur it on camera)'
+                  : 'Set EXECUTE_SECRET in .env — still change-me placeholder'}
+              </p>
+            </div>
+          </div>
+        )}
 
         {err && (
           <div className="mt-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">

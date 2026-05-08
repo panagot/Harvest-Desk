@@ -2,6 +2,7 @@
 api
 .env
 .env.*
+!.env.example
 *.local
 
 # Dependencies & build artifacts

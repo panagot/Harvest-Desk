@@ -2,6 +2,8 @@ import { NavLink } from 'react-router-dom'
 import { ExternalLink, Shield, RefreshCw } from 'lucide-react'
 import { cn } from '../lib/utils'
 
+import type { DeskPayload } from '../types'
+
 const links = [
   { to: '/overview', label: 'Overview' },
   { to: '/positions', label: 'Positions' },
@@ -12,10 +14,24 @@ const links = [
 type NavbarProps = {
   mockMode: boolean
   loading: boolean
+  apiKeySource: NonNullable<DeskPayload['auth']['apiKeySource']>
   onRefresh: () => void
 }
 
-export function Navbar({ mockMode, loading, onRefresh }: NavbarProps) {
+function liveBadgeLabel(apiKeySource: NavbarProps['apiKeySource']) {
+  switch (apiKeySource) {
+    case 'sibling_api_file':
+      return 'Live · sibling api'
+    case 'custom_key_file':
+      return 'Live · key file'
+    case 'environment':
+      return 'Live · env'
+    default:
+      return 'Live API'
+  }
+}
+
+export function Navbar({ mockMode, loading, apiKeySource, onRefresh }: NavbarProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200/90 bg-[var(--desk-nav)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex h-[3.25rem] max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
@@ -60,7 +76,7 @@ export function Navbar({ mockMode, loading, onRefresh }: NavbarProps) {
             )}
           >
             <Shield className="h-3.5 w-3.5 text-zinc-500" />
-            {mockMode ? 'Demo data' : 'Live API'}
+            {mockMode ? 'Demo data' : liveBadgeLabel(apiKeySource)}
           </span>
           <button
             type="button"

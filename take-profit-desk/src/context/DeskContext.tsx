@@ -39,6 +39,8 @@ type DeskContextValue = {
   pnl: Record<string, number | undefined> | undefined
   evaluation: DeskEvaluation | null | undefined
   mockMode: boolean
+  apiKeySource: NonNullable<DeskPayload['auth']['apiKeySource']>
+  zerionCliPresent: boolean
 }
 
 const DeskContext = createContext<DeskContextValue | null>(null)
@@ -156,6 +158,8 @@ export function DeskProvider({ children }: { children: ReactNode }) {
 
   const evaluation = data?.evaluation as DeskEvaluation | null | undefined
   const mockMode = data?.auth.mockMode ?? true
+  const apiKeySource = data?.auth.apiKeySource ?? 'unset'
+  const zerionCliPresent = data?.auth.zerionCliPresent ?? false
 
   const value: DeskContextValue = {
     data,
@@ -177,6 +181,8 @@ export function DeskProvider({ children }: { children: ReactNode }) {
     pnl: pnlBlock?.pnl,
     evaluation,
     mockMode,
+    apiKeySource,
+    zerionCliPresent,
   }
 
   return <DeskContext.Provider value={value}>{children}</DeskContext.Provider>

@@ -1,7 +1,10 @@
+import { existsSync } from "node:fs";
+import { getZerionApiKeySource } from "./bootstrapEnv.ts";
 import { evaluateDesk } from "./engine.ts";
 import { loadPolicy } from "./policyStore.ts";
 import { loadState, saveState, type AgentState } from "./agentState.ts";
 import { mockPnl, mockPortfolio } from "./mockData.ts";
+import { resolveZerionCliPath } from "./paths.ts";
 import { zerionJson, type PortfolioStdout, type PnlStdout, type SwapStdout } from "./zerionRunner.ts";
 import type { DeskPolicy } from "./policySchema.ts";
 
@@ -16,6 +19,8 @@ export function summarizeDeskAuth(mock: boolean) {
     executeSecretConfigured: Boolean(
       process.env.EXECUTE_SECRET?.trim() && process.env.EXECUTE_SECRET !== "change-me-to-a-long-random-string",
     ),
+    apiKeySource: getZerionApiKeySource(),
+    zerionCliPresent: existsSync(resolveZerionCliPath()),
   };
 }
 

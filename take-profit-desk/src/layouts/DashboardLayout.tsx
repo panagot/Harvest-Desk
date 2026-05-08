@@ -5,11 +5,16 @@ import { Navbar } from '../components/Navbar'
 import { useDesk } from '../context/DeskContext'
 
 export function DashboardLayout() {
-  const { mockMode, loading, load, banner, dismissBanner } = useDesk()
+  const { mockMode, loading, load, banner, dismissBanner, apiKeySource } = useDesk()
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar mockMode={mockMode} loading={loading} onRefresh={() => void load()} />
+      <Navbar
+        mockMode={mockMode}
+        loading={loading}
+        apiKeySource={apiKeySource}
+        onRefresh={() => void load()}
+      />
 
       {banner && (
         <div className="border-b border-zinc-200 bg-zinc-50">
