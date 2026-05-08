@@ -16,6 +16,11 @@ Goal: Capture **Harvest Desk at `http://localhost:5173`** with **live Zerion dat
 4. **App** — from `take-profit-desk/`:
    - `npm install`
    - `npm run dev` → UI **:5173**, API **:8787** (Vite proxies `/api`).
+5. **Smoke test (AI agent APIs)** — with dev server running:
+   ```bash
+   npm run test:agent
+   ```
+   On **native Windows**, Zerion CLI may refuse to load (missing Win32 Open Wallet Standard binary — use **WSL2** or **`MOCK_MODE=true`** for a full pass). The script prints **PARTIAL PASS** when the API works but CLI cannot spawn.
 
 ## 2. Before you hit record
 
