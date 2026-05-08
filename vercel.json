@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm install --prefix ./take-profit-desk",
+  "buildCommand": "npm run build --prefix ./take-profit-desk",
+  "outputDirectory": "take-profit-desk/dist",
+  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
+}

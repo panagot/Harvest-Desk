@@ -1,0 +1,6 @@
+{
+  "name": "harvest-desk-monorepo",
+  "private": true,
+  "description": "Vercel build runs in take-profit-desk; this file anchors the repo root for npm/install.",
+  "type": "module"
+}
