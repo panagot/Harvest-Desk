@@ -17,11 +17,13 @@ function parseStdoutJson(stdout: string): unknown {
  */
 export async function runZerion(args: string[], env: NodeJS.ProcessEnv): Promise<{ stdout: string; stderr: string; code: number }> {
   const cli = resolveZerionCliPath();
+  /** Zerion package root (parent of `cli/`) so Node resolves `node_modules` (e.g. `viem`). */
+  const zerionPackageRoot = path.join(path.dirname(cli), "..");
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [cli, ...args], {
       env: { ...process.env, ...env, FORCE_COLOR: "0" },
       windowsHide: true,
-      cwd: path.dirname(cli),
+      cwd: zerionPackageRoot,
     });
     let stdout = "";
     let stderr = "";

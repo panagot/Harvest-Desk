@@ -1,18 +1,13 @@
 import { AlertTriangle, LayoutDashboard, ShieldCheck } from 'lucide-react'
+import { describeDeskFetchError } from '../lib/friendlyDeskError'
 import { Panel } from '../components/Panel'
+import { Link } from 'react-router-dom'
 import { useDesk } from '../context/DeskContext'
 
 export function OverviewPage() {
-  const { loading, err, data, mockMode, pnl, apiKeySource, zerionCliPresent } = useDesk()
+  const { loading, err, data, mockMode, pnl, zerionCliPresent, load } = useDesk()
 
-  const keyLabel =
-    apiKeySource === 'sibling_api_file'
-      ? '`…/Frontier/Zerion/api` (sibling key file)'
-      : apiKeySource === 'environment'
-        ? '`ZERION_API_KEY`'
-        : apiKeySource === 'custom_key_file'
-          ? '`ZERION_API_KEY_FILE`'
-          : 'not loaded'
+  const fetchFriendly = data?.fetchError ? describeDeskFetchError(data.fetchError) : null
 
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
@@ -27,9 +22,8 @@ export function OverviewPage() {
               Take-profit crystallization
             </h1>
             <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
-              Institutional-style guardrails around discretionary sells: Zerion-derived P&amp;L and portfolio snapshots,
-              local policy envelopes, optional checkpointing, then single-path execution routed through{' '}
-              <span className="font-medium text-slate-900">your fork</span> of the Zerion CLI.
+              Read positions and PnL from your fork of the Zerion CLI, apply take-profit policies locally, then optionally
+              settle into stables through Zerion’s routing when your gates allow it.
             </p>
           </div>
           {!loading && (
@@ -37,61 +31,61 @@ export function OverviewPage() {
               {mockMode ? (
                 <span className="inline-flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900">
                   <AlertTriangle className="h-4 w-4 shrink-0" />
-                  Running on synthetic analytics
+                  Practice mode — no live key
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm font-medium text-zinc-900 shadow-sm">
-                  <ShieldCheck className="h-4 w-4 shrink-0 text-zinc-600" />
-                  Live Zerion data (API routes through local CLI — see readiness below)
+                <span className="inline-flex items-center gap-2 rounded-lg border border-emerald-200/80 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-950 shadow-sm">
+                  <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-700" />
+                  Live data {zerionCliPresent ? 'ready' : '— CLI still setting up'}
                 </span>
               )}
             </div>
           )}
         </div>
 
-        {!loading && !mockMode && !zerionCliPresent && (
-          <div className="mt-6 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-            <strong className="font-semibold">Zerion CLI not found</strong>
-            {' — '}Live PnL/portfolio queries need <code className="rounded bg-white/70 px-1">zerion-ai/cli/zerion.js</code>.
-            Initialize the submodule then run{' '}
-            <code className="rounded bg-white/70 px-1">npm install</code> in <code className="rounded bg-white/70 px-1">zerion-ai/</code>{' '}
-            before recording swaps.
-          </div>
+        {!loading && mockMode && (
+          <p className="mt-5 text-sm text-slate-600">
+            Add a Zerion agent API key (<code className="rounded bg-zinc-100 px-1 py-0.5 text-[13px]">.env</code> or sibling{' '}
+            <code className="rounded bg-zinc-100 px-1 py-0.5 text-[13px]">api</code> file), set{' '}
+            <code className="rounded bg-zinc-100 px-1 py-0.5 text-[13px]">MOCK_MODE=false</code>, then hit{' '}
+            <button
+              type="button"
+              className="font-semibold text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:decoration-zinc-900"
+              onClick={() => void load()}
+            >
+              Sync
+            </button>
+            .
+          </p>
         )}
 
-        {!loading && !mockMode && (
-          <div className="mt-6 grid gap-3 rounded-xl border border-zinc-200/90 bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:grid-cols-3">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">API key source</p>
-              <p className="mt-2 text-sm text-zinc-900">{keyLabel}</p>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">CLI</p>
-              <p className="mt-2 text-sm font-medium text-zinc-900">
-                {zerionCliPresent ? 'Detected (ready for Zerion CLI calls)' : 'Missing (see alert above)'}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Execute gate</p>
-              <p className="mt-2 text-sm text-zinc-900">
-                {data?.auth.executeSecretConfigured
-                  ? 'Execute secret configured (blur it on camera)'
-                  : 'Set EXECUTE_SECRET in .env — still change-me placeholder'}
-              </p>
-            </div>
+        {!loading && !mockMode && !zerionCliPresent && (
+          <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+            <strong className="font-semibold">Finish CLI setup</strong> — clone the{' '}
+            <code className="rounded bg-white/80 px-1 py-0.5 text-[13px]">zerion-ai</code> submodule and run{' '}
+            <code className="rounded bg-white/80 px-1 py-0.5 text-[13px]">npm install</code> there (Harvest Desk runs this on{' '}
+            <code className="rounded bg-white/80 px-1 py-0.5 text-[13px]">npm install</code>). Then sync again.
           </div>
         )}
 
         {err && (
-          <div className="mt-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
-            {err}
-          </div>
+          <div className="mt-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">{err}</div>
         )}
 
-        {!loading && data?.fetchError && (
-          <div className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-            Unable to hydrate live metrics: <span className="font-medium">{data.fetchError}</span>. Inspect wallet name
-            and Zerion CLI configuration; policy authoring remains available.
+        {!loading && fetchFriendly && (
+          <div className="mt-6 rounded-lg border border-amber-300 bg-amber-50/90 px-5 py-4 text-sm text-amber-950 shadow-sm">
+            <p className="font-semibold text-amber-950">{fetchFriendly.title}</p>
+            <p className="mt-2 leading-relaxed text-amber-900/95">{fetchFriendly.detail}</p>
+            {fetchFriendly.fix && (
+              <p className="mt-3 rounded-md bg-white/80 px-3 py-2 font-medium text-zinc-900">{fetchFriendly.fix}</p>
+            )}
+            <button
+              type="button"
+              onClick={() => void load()}
+              className="mt-4 rounded-lg bg-zinc-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-black"
+            >
+              Retry sync
+            </button>
           </div>
         )}
 
@@ -103,7 +97,13 @@ export function OverviewPage() {
                 ? `$${Number(pnl.totalGain).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
                 : '—'}
             </p>
-            <p className="mt-3 text-xs text-slate-500">All-time Zerion attribution for this wallet lens.</p>
+            <p className="mt-3 text-xs text-slate-500">
+              Zerion attribution for the wallet configured on the{' '}
+              <Link to="/execution" className="font-medium text-zinc-700 underline underline-offset-2 hover:text-zinc-900">
+                Execution
+              </Link>{' '}
+              page.
+            </p>
           </Panel>
           <Panel className="p-5">
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Realized</p>
@@ -122,6 +122,13 @@ export function OverviewPage() {
             </p>
           </Panel>
         </div>
+
+        {!loading && !mockMode && data?.auth && !data.auth.executeSecretConfigured && (
+          <p className="mt-8 text-xs text-zinc-500">
+            Tip: configure <code className="rounded bg-zinc-100 px-1 py-0.5">EXECUTE_SECRET</code> before automations or swaps
+            from the <Link to="/agent" className="font-medium text-zinc-800 underline underline-offset-2 hover:text-black">AI agent</Link> page.
+          </p>
+        )}
       </section>
     </main>
   )

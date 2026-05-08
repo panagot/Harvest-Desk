@@ -5,14 +5,21 @@ import { Navbar } from '../components/Navbar'
 import { useDesk } from '../context/DeskContext'
 
 export function DashboardLayout() {
-  const { mockMode, loading, load, banner, dismissBanner, apiKeySource } = useDesk()
+  const {
+    mockMode,
+    loading,
+    load,
+    banner,
+    dismissBanner,
+    zerionCliPresent,
+  } = useDesk()
 
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar
         mockMode={mockMode}
         loading={loading}
-        apiKeySource={apiKeySource}
+        zerionCliPresent={zerionCliPresent}
         onRefresh={() => void load()}
       />
 

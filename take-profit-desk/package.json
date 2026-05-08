@@ -13,7 +13,9 @@
     "start": "tsx server/index.ts",
     "preview:all": "npm run build && cross-env SERVE_STATIC=1 NODE_ENV=production tsx server/index.ts",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deps:cli": "node ./scripts/ensure-zerion-cli-deps.mjs",
+    "postinstall": "node ./scripts/ensure-zerion-cli-deps.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",

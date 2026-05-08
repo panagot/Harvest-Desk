@@ -1,4 +1,5 @@
 import { ArrowRightLeft, Database } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Panel } from '../components/Panel'
 import type { DeskPolicy } from '../types'
 import { useDesk } from '../context/DeskContext'
@@ -24,8 +25,12 @@ export function ExecutionPage() {
           Execution &amp; policy ledger
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
-          Persist policy JSON to disk on the API host, then route swaps through Zerion CLI when gates show{' '}
-          <span className="font-medium text-zinc-900">Eligible</span> on the Policy engine page.
+          Save guardrails once: wallet lens, chains, thresholds, expiry. Harvest Desk persists them beside the API, then swaps only
+          when the{' '}
+          <Link to="/engine" className="font-medium text-zinc-800 underline underline-offset-2 hover:text-black">
+            policy engine
+          </Link>{' '}
+          returns <span className="font-medium text-zinc-900">Eligible</span>.
         </p>
       </div>
 

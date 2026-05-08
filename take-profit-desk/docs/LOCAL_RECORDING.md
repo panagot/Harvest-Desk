@@ -6,7 +6,7 @@ Goal: Capture **Harvest Desk at `http://localhost:5173`** with **live Zerion dat
 
 1. **Submodule + CLI deps** — from repo root (`Zerion/`):
    - `git submodule update --init --recursive`
-   - `cd zerion-ai && npm install`
+   - `cd zerion-ai && npm install` (**or** rely on `take-profit-desk` **`npm install`** — it runs this automatically on your machine unless `VERCEL` / `CI` is set).
 2. **API key file** — keep a single line in **`Zerion/api`** next to **`take-profit-desk/`** (already gitignored). The server picks it up automatically; no need to paste the key into chat or commit it.
 3. **`.env` in `take-profit-desk/`** — copy from [`.env.example`](../.env.example):
    - **`DESK_WALLET`** = wallet name Zerion recognizes (replace `demo-wallet`).
@@ -21,15 +21,16 @@ Goal: Capture **Harvest Desk at `http://localhost:5173`** with **live Zerion dat
 
 | Check | Where |
 |--------|--------|
-| Navbar says **Live · sibling api** (or **Live · env**) | Top bar |
-| **Overview** shows **API key source** + **CLI** + **Execute gate** | Readiness cards |
-| **CLI** = “Detected” | If “Missing”, finish `zerion-ai` install before live PnL/swap shots |
+| Navbar shows **Live · Zerion** (or **Practice mode**) | Top bar |
+| **Overview** shows friendly errors if CLI deps are missing | Amber callout + **Retry sync** |
+| **CLI** detected (navbar) | If **CLI install pending**, run `npm install` in `zerion-ai/` |
+| Use **AI agent** page for guided evaluate + swap | `/agent` |
 | Policy wallet matches your live wallet | **Execution** page |
 | Blur **Execute secret** if typing on camera | [`DEMO_SCRIPT.md`](./DEMO_SCRIPT.md) |
 
 ## 3. Record in this order (suggested)
 
-Same flow as **DEMO_SCRIPT**: problem → architecture → **Execution** (policy) → **Overview** / **Engine** → **Execution** (swap or mock + cut to live).
+Same flow as **DEMO_SCRIPT**: problem → architecture → **Execution** (policy) → **Overview** / **Engine** → **AI agent** (evaluate + optional real swap).
 
 ## 4. If live metrics fail
 
